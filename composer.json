@@ -1,21 +1,31 @@
 {
-    "name": "mouseketeers/user-consent",
-    "description": "A SilverStripe module to handle user consents",
-    "type": "silverstripe-module",
+    "name": "mouseketeers/consent-records",
+    "description": "A SilverStripe module to store user consents",
+    "authors": [
+        {
+            "name": "Mouseketeers",
+            "email": "support@mouseketeers.dk",
+            "homepage": "http://www.mouseketeers.dk"
+        }
+    ],    
+    "type": "silverstripe-vendormodule",
     "keywords": [
         "silverstripe",
         "consent",
         "GDPR"
     ],
     "license": "BSD-3-Clause",
-    "authors": [
-        {
-            "name": "Henrik Olsen",
-            "email": "henrik@mouseketeers.dk"
-        }
-    ],
     "require": {
-        "silverstripe/framework": "^3.6"
+        "dnadesign/silverstripe-elemental": "^4.0"
     },
-    "minimum-stability": "stable"
+    "config": {
+        "process-timeout": 600
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "autoload": {
+        "psr-4": {
+            "Mouseketeers\\ConsentRecords\\": "src/"
+        }
+    }    
 }
