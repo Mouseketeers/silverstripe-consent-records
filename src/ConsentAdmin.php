@@ -6,7 +6,7 @@ use SilverStripe\Admin\ModelAdmin;
 
 class ConsentAdmin extends ModelAdmin {
 
-	private static $menu_icon = '/consent-records/images/paragraf-symbol.svg';
+	private static $menu_icon_class = 'font-icon-edit-list';
 	
 	private static $managed_models = [
 		'ConsentRecord'
