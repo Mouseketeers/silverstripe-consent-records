@@ -1,5 +1,5 @@
 {
-    "name": "mouseketeers/user-consent",
+    "name": "mouseketeers/consent-records",
     "description": "A SilverStripe module to handle user consents",
     "type": "silverstripe-module",
     "keywords": [
