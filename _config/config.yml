@@ -1,3 +1,6 @@
 ---
 Name: consent-records
 ---
+SiteConfig:
+  extensions:
+    - ConsentRecordsSiteConfigExtension
