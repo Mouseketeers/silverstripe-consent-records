@@ -1,6 +1,6 @@
 ---
 Name: consent-records
 ---
-SiteConfig:
+SilverStripe\SiteConfig\SiteConfig:
   extensions:
-    - ConsentRecordsSiteConfigExtension
+    - Mouseketeers\ConsentRecords\ConsentRecordsSiteConfigExtension
