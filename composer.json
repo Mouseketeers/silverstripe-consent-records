@@ -16,7 +16,9 @@
     ],
     "license": "BSD-3-Clause",
     "require": {
-        "dnadesign/silverstripe-elemental": "^4.0"
+        "silverstripe/framework": "^4.0",
+        "silverstripe/admin": "^1.0",
+        "silverstripe/cms": "^4.0"
     },
     "config": {
         "process-timeout": 600
