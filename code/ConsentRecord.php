@@ -33,6 +33,20 @@ class ConsentRecord extends DataObject
 	private static $indexes = [
 		'ConsentID'
 	];
+
+	public function getCMSFields()
+	{
+		$fields = parent::getCMSFields();
+		
+		// Make all fields readonly
+		foreach($fields->dataFields() as $field) {
+			$readonlyField = $field->performReadonlyTransformation();
+			$fields->replaceField($field->getName(), $readonlyField);
+		}
+		
+		return $fields;
+	}
+
 	public static function registerConsents($data) 
 	{
 		foreach($data['Consents'] as $consent) {
@@ -71,19 +85,19 @@ class ConsentRecord extends DataObject
 		if ($this->ConsentStatement) {
 			$this->ConsentStatement = strip_tags($this->ConsentStatement);
 		}
+		if ($this->ConsentData) {
+			$this->ConsentData = strip_tags($this->ConsentData);
+		}
 
-		if($this->ConsentType == 'TermsAndPrivacyConsent') {
-
-			$siteConfig = SiteConfig::current_site_config();		
-			
-			if ($siteConfig->TermsPageID) {
-				$this->TermsPageID = $siteConfig->TermsPageID;
-				$this->TermsPageVersion = $siteConfig->TermsPage()->Version ?? 0;
-			}
-			if ($siteConfig->PrivacyPageID) {
-				$this->PrivacyPageID = $siteConfig->PrivacyPageID;
-				$this->PrivacyPageVersion = $siteConfig->PrivacyPage()->Version ?? 0;
-			}
-		};
+		$siteConfig = SiteConfig::current_site_config();		
+		
+		if ($siteConfig->TermsPageID) {
+			$this->TermsPageID = $siteConfig->TermsPageID;
+			$this->TermsPageVersion = $siteConfig->TermsPage()->Version ?? 0;
+		}
+		if ($siteConfig->PrivacyPageID) {
+			$this->PrivacyPageID = $siteConfig->PrivacyPageID;
+			$this->PrivacyPageVersion = $siteConfig->PrivacyPage()->Version ?? 0;
+		}
 	}
 }
