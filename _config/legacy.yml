@@ -1,0 +1,4 @@
+SilverStripe\ORM\DatabaseAdmin:
+  classname_value_remapping:
+    ConsentAdmin: Mouseketeers\ConsentRecords\ConsentAdmin
+    ConsentRecord: Mouseketeers\ConsentRecords\ConsentRecord
