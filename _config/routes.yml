@@ -1,0 +1,7 @@
+---
+Name: consent-records-routes
+After: framework/routes#coreroutes
+---
+Director:
+  rules:
+    'consent//$Action': 'CookieConsentController'
