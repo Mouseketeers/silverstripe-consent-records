@@ -1,5 +1,5 @@
 {
-    "name": "mouseketeers/consent-records",
+    "name": "mouseketeers/silverstripe-consent-records",
     "description": "A SilverStripe module to store user consents",
     "authors": [
         {
