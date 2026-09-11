@@ -24,17 +24,13 @@ class CookieConsentController extends Controller
             ], 400);
         }
 
-        if (isset($payload['Consents']) && is_array($payload['Consents'])) {
-            $formData = $payload['FormData'] ?? [];
-            foreach ($payload['Consents'] as $consent) {
-                ConsentRecord::registerConsent($formData, $consent);
-            }
-        } else {
-            $consentData = $payload['consent'] ?? $payload;
-            $formData = $payload['FormData'] ?? [];
-            ConsentRecord::registerConsent($formData, $consentData);
+        $consentData = $payload['consent'] ?? $payload;
+        if (!ConsentRecord::registerConsent($consentData)) {
+            return $this->jsonResponse([
+                'status' => 'error',
+                'message' => 'Consent could not be saved.'
+            ], 500);
         }
-
         return $this->jsonResponse([
             'status' => 'ok'
         ]);

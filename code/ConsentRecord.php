@@ -47,37 +47,29 @@ class ConsentRecord extends DataObject
 		return $fields;
 	}
 
-	public static function registerConsents($data) 
+	public static function registerConsent($consentData)
 	{
-		foreach($data['Consents'] as $consent) {
-			self::registerConsent($data['FormData'], $consent);
-		}
-	}
-	public static function registerConsent($data, $consent = null)
-	{
-		$consentRecord = new ConsentRecord();
-
 		$assignments = [
-			'ConsentType' => 		$consent['ConsentType'] ?? null,
-			'ConsentID' => 			$consent['ConsentID'] ?? $data['Email'] ?? null,
-			'ConsentStatement' => 	$consent['ConsentStatement'] ?? $data['TermsAndPrivacyConsent'] ?? null,
-			'ConsentData' => 		$consent['ConsentData'] ?? $data['FormData'] ?? null,
-			'URL' => 				$consent['URL'] ?? Director::absoluteURL(Controller::curr()->getRequest()->getURL())
+			'ConsentID' =>          $consentData['ConsentID'] ?? $consentData['Email'] ?? 'N/A',
+			'ConsentType' =>        $consentData['ConsentType'] ?? 'N/A',
+			'ConsentStatement' =>   $consentData['ConsentStatement'] ?? $consentData['TermsAndPrivacyConsent'] ?? 'N/A',
+			'ConsentData' =>        $consentData['ConsentData'] ?? 'N/A',
+			'URL' =>                $consentData['URL'] ?? Director::absoluteURL(Controller::curr()->getRequest()->getURL())
 		];
 
+		// Convert ConsentData to JSON if it's an array
 		if (!empty($assignments['ConsentData']) && is_array($assignments['ConsentData'])) {
 			$assignments['ConsentData'] = json_encode($assignments['ConsentData']);
 		}
 
+    	$consentRecord = new ConsentRecord();
+
 		foreach ($assignments as $property => $value) {
-			if (!empty($value)) {
-				$consentRecord->$property = $value;
-			}
+        	$consentRecord->$property = $value; // Direct assignment without checking emptiness
 		}
-
-		$consentRecord->write();
-
+		return $consentRecord->write();
 	}
+	
 	public function onBeforeWrite()
 	{
 		parent::onBeforeWrite();

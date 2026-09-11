@@ -1,5 +1,5 @@
 {
-    "name": "mouseketeers/consent-records",
+    "name": "mouseketeers/silverstripe-consent-records",
     "description": "A SilverStripe module to handle user consents",
     "type": "silverstripe-module",
     "keywords": [
@@ -17,5 +17,8 @@
     "require": {
         "silverstripe/framework": "^3.6"
     },
-    "minimum-stability": "stable"
+    "minimum-stability": "stable",
+    "extra": {
+		"installer-name": "consent-records"
+	}
 }
