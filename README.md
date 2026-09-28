@@ -71,6 +71,29 @@ The module extends SiteConfig to allow you to link legal pages. Go to Settings >
 
 These pages will be automatically linked to consent records for audit purposes.
 
+### Default legal page URLs
+
+When no page is selected in Site Settings, `getTermsPageLink()` and `getPrivacyPageLink()` fall back to a configured URL. This is useful when the legal pages live outside SilverStripe, or before a page has been selected:
+
+```yml
+---
+Name: my-consent-defaults
+After: '#consent-records'
+---
+Mouseketeers\ConsentRecords\ConsentRecordsSiteConfigExtension:
+  terms_page_url: "https://example.com/terms-and-conditions"
+  privacy_page_url: "https://example.com/privacy-policy"
+```
+
+The configured URL is only used when no page is selected, and the label passed to the method is used as the link text:
+
+```php
+$siteConfig = SiteConfig::current_site_config();
+
+$termsLink = $siteConfig->getTermsPageLink('Terms of Use');
+$privacyLink = $siteConfig->getPrivacyPageLink('Privacy Policy');
+```
+
 ## Database Fields
 
 - `ConsentID`: Unique identifier for the consent

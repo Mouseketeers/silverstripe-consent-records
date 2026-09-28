@@ -4,3 +4,15 @@ Name: consent-records
 SilverStripe\SiteConfig\SiteConfig:
   extensions:
     - Mouseketeers\ConsentRecords\ConsentRecordsSiteConfigExtension
+
+# To set default Terms/Privacy page URLs (used when no page is selected in the
+# CMS Site Settings), add the following to your project config, e.g. in
+# app/_config/config.yml:
+#
+# ---
+# Name: my-consent-defaults
+# After: '#consent-records'
+# ---
+# Mouseketeers\ConsentRecords\ConsentRecordsSiteConfigExtension:
+#   terms_page_url: "https://example.com/terms-and-conditions"
+#   privacy_page_url: "https://example.com/privacy-policy"
