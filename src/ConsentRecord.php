@@ -42,11 +42,24 @@ class ConsentRecord extends DataObject {
 	private static $indexes = [
 		'ConsentID' => true
 	];
+
+	public function getCMSFields()
+	{
+		$fields = parent::getCMSFields();
+
+		// Consent records are an audit trail, so none of the fields are editable
+		foreach ($fields->dataFields() as $field) {
+			$readonlyField = $field->performReadonlyTransformation();
+			$fields->replaceField($field->getName(), $readonlyField);
+		}
+
+		return $fields;
+	}
 	
 	public static function registerConsents($data) 
 	{
 		foreach ($data['Consents'] as $consent) {
-			self::registerConsent($data['FormData'], $consent);
+			self::registerConsent($data['FormData'] ?? [], $consent);
 		}
 	}
 
@@ -56,10 +69,10 @@ class ConsentRecord extends DataObject {
 		$consentRecord = new ConsentRecord();
 
 		$assignments = [
-			'ConsentType' => 		$consent['ConsentType'] ?? null,
-			'ConsentID' => 			$consent['ConsentID'] ?? $data['Email'] ?? null,
-			'ConsentStatement' => 	$consent['ConsentStatement'] ?? $data['TermsAndPrivacyConsent'] ?? null,
-			'ConsentData' => 		$consent['ConsentData'] ?? $data['FormData'] ?? null,
+			'ConsentType' => 		$consent['ConsentType'] ?? 'N/A',
+			'ConsentID' => 			$consent['ConsentID'] ?? $data['Email'] ?? 'N/A',
+			'ConsentStatement' => 	$consent['ConsentStatement'] ?? $data['TermsAndPrivacyConsent'] ?? 'N/A',
+			'ConsentData' => 		$consent['ConsentData'] ?? $data['FormData'] ?? 'N/A',
 			'URL' => 				$consent['URL'] ?? Director::absoluteURL(Controller::curr()->getRequest()->getURL())
 		];
 
@@ -68,12 +81,12 @@ class ConsentRecord extends DataObject {
 		}
 
 		foreach ($assignments as $property => $value) {
-			if (!empty($value)) {
-				$consentRecord->$property = $value;
-			}
+			// Direct assignment without checking emptiness, so missing values are
+			// stored as 'N/A' rather than being left blank.
+			$consentRecord->$property = $value;
 		}
 
-		$consentRecord->write();
+		return $consentRecord->write();
 	}
 
 	public function onBeforeWrite()
@@ -83,18 +96,19 @@ class ConsentRecord extends DataObject {
 		if ($this->ConsentStatement) {
 			$this->ConsentStatement = strip_tags($this->ConsentStatement);
 		}
+		if ($this->ConsentData) {
+			$this->ConsentData = strip_tags($this->ConsentData);
+		}
 
-		if ($this->ConsentType == 'TermsAndPrivacyConsent') {
-			$siteConfig = SiteConfig::current_site_config();
+		$siteConfig = SiteConfig::current_site_config();
 			
-			if ($siteConfig->TermsPageID && $siteConfig->TermsPage()) {
-				$this->TermsPageID = $siteConfig->TermsPageID;
-				$this->TermsPageVersion = $siteConfig->TermsPage()->Version ?? 0;
-			}
-			if ($siteConfig->PrivacyPageID && $siteConfig->PrivacyPage()) {
-				$this->PrivacyPageID = $siteConfig->PrivacyPageID;
-				$this->PrivacyPageVersion = $siteConfig->PrivacyPage()->Version ?? 0;
-			}
+		if ($siteConfig->TermsPageID && $siteConfig->TermsPage()) {
+			$this->TermsPageID = $siteConfig->TermsPageID;
+			$this->TermsPageVersion = $siteConfig->TermsPage()->Version ?? 0;
+		}
+		if ($siteConfig->PrivacyPageID && $siteConfig->PrivacyPage()) {
+			$this->PrivacyPageID = $siteConfig->PrivacyPageID;
+			$this->PrivacyPageVersion = $siteConfig->PrivacyPage()->Version ?? 0;
 		}
 	}
 }
