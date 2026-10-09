@@ -65,7 +65,7 @@ class ConsentRecord extends DataObject {
 
 	public static function registerConsent($data, $consent = null)
 	{
-		$consent = $consent ?? [];
+		$consent ??= [];
 		$consentRecord = new ConsentRecord();
 
 		$assignments = [
