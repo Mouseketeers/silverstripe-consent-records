@@ -45,7 +45,7 @@ class ConsentRecordsSiteConfigExtension extends DataExtension
      */
     public function getTermsPageLink($label = null)
     {
-        $page = $this->owner->TermsPageID ? $this->owner->TermsPage() : null;
+        $page = $this->getOwner()->TermsPageID ? $this->getOwner()->TermsPage() : null;
 
         return $this->buildLegalPageLink($page, Config::inst()->get(self::class, 'terms_page_url'), $label);
     }
@@ -58,7 +58,7 @@ class ConsentRecordsSiteConfigExtension extends DataExtension
      */
     public function getPrivacyPageLink($label = null)
     {
-        $page = $this->owner->PrivacyPageID ? $this->owner->PrivacyPage() : null;
+        $page = $this->getOwner()->PrivacyPageID ? $this->getOwner()->PrivacyPage() : null;
 
         return $this->buildLegalPageLink($page, Config::inst()->get(self::class, 'privacy_page_url'), $label);
     }
