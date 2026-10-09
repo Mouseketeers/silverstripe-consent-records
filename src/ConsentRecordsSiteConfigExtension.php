@@ -2,13 +2,13 @@
 
 namespace Mouseketeers\ConsentRecords;
 
+use SilverStripe\Core\Extension;
 use SilverStripe\Core\Config\Config;
-use SilverStripe\ORM\DataExtension;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\TreeDropdownField;
 use SilverStripe\CMS\Model\SiteTree;
 
-class ConsentRecordsSiteConfigExtension extends DataExtension 
+class ConsentRecordsSiteConfigExtension extends Extension 
 {
     /**
      * Default terms page URL. Used when no Terms page is selected in Site Settings.

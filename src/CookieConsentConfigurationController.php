@@ -82,7 +82,7 @@ class CookieConsentConfigurationController extends Controller
 
     protected function jsonResponse(array $data, $statusCode = 200)
     {
-        $response = \SilverStripe\Control\HTTPResponse::create();
+        $response = HTTPResponse::create();
         $response->addHeader('Content-Type', 'application/json; charset=utf-8');
         $response->setStatusCode($statusCode);
         $response->setBody(json_encode($data));
