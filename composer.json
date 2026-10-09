@@ -7,7 +7,7 @@
             "email": "support@mouseketeers.dk",
             "homepage": "http://www.mouseketeers.dk"
         }
-    ],    
+    ],
     "type": "silverstripe-vendormodule",
     "keywords": [
         "silverstripe",
@@ -16,10 +16,10 @@
     ],
     "license": "BSD-3-Clause",
     "require": {
-        "silverstripe/framework": "^5.4",
-        "silverstripe/admin": "^2",
-        "silverstripe/cms": "^5",
-        "php": "^8.1"
+        "silverstripe/framework": "^6",
+        "silverstripe/admin": "^3",
+        "silverstripe/cms": "^6",
+        "php": "^8.3"
     },
     "config": {
         "process-timeout": 600
@@ -30,5 +30,5 @@
         "psr-4": {
             "Mouseketeers\\ConsentRecords\\": "src/"
         }
-    }    
+    }
 }
