@@ -48,7 +48,7 @@ class ConsentRecord extends DataObject {
 		$fields = parent::getCMSFields();
 
 		// Consent records are an audit trail, so none of the fields are editable
-		foreach ($fields->getDataFields() as $field) {
+		foreach ($fields->dataFields() as $field) {
 			$readonlyField = $field->performReadonlyTransformation();
 			$fields->replaceField($field->getName(), $readonlyField);
 		}
