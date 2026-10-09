@@ -66,7 +66,7 @@ class ConsentRecord extends DataObject {
 	public static function registerConsent($data, $consent = null)
 	{
 		$consent ??= [];
-		$consentRecord = \Mouseketeers\ConsentRecords\ConsentRecord::create();
+		$consentRecord = ConsentRecord::create();
 
 		$assignments = [
 			'ConsentType' => 		$consent['ConsentType'] ?? 'N/A',
