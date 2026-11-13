@@ -86,7 +86,3 @@ class CookieConsentConfigurationController extends Controller
         return $response;
     }
 }
-
-if (!class_exists('CookieConsentConfigurationController', false)) {
-    class_alias(__NAMESPACE__ . '\\CookieConsentConfigurationController', 'CookieConsentConfigurationController');
-}
