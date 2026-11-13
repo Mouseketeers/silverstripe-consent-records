@@ -114,9 +114,9 @@ sake tasks:consent-retention --consent-id=jo@example.com
 
 | consent-records | consent-forms | consent-userforms | cookie-consent | SilverStripe |
 |-----------------|---------------|-------------------|----------------|--------------|
-| 4.x             | 4.x, 5.x      | 3.x               | 3.x (SS5), 4.x (SS6), once updated | 5.4 / 6      |
+| 5.x             | 4.x (SS5), 5.x (SS6) | 3.x (SS5.4/6), 4.x (SS6) | 3.x (SS5), 4.x (SS6) | 5.4 / 6      |
 
-`cookie-consent` needs consent-records 4.x (the `_consent/register` route).
+`cookie-consent` needs consent-records 5.x (the `_consent/register` route). Versions before 5.0 expose `/consent/register`.
 
 ## Database Fields
 
