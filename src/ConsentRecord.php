@@ -72,11 +72,11 @@ class ConsentRecord extends DataObject {
 			'ConsentType' => 		$consent['ConsentType'] ?? 'N/A',
 			'ConsentID' => 			$consent['ConsentID'] ?? $data['Email'] ?? 'N/A',
 			'ConsentStatement' => 	$consent['ConsentStatement'] ?? $data['TermsAndPrivacyConsent'] ?? 'N/A',
-			'ConsentData' => 		$consent['ConsentData'] ?? $data['FormData'] ?? 'N/A',
+			'ConsentData' => 		$consent['ConsentData'] ?? ($data ?: 'N/A'),
 			'URL' => 				$consent['URL'] ?? Director::absoluteURL(Controller::curr()->getRequest()->getURL())
 		];
 
-		if (!empty($assignments['ConsentData']) && is_array($assignments['ConsentData'])) {
+		if (is_array($assignments['ConsentData'])) {
 			$assignments['ConsentData'] = json_encode($assignments['ConsentData']);
 		}
 
