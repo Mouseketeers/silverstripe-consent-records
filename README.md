@@ -103,6 +103,33 @@ $privacyLink = $siteConfig->getPrivacyPageLink('Privacy Policy');
 browser requests are rejected, and the body is capped at `max_body_bytes`. Form data and multi-consent
 writes are only possible server-side through `ConsentRecord::registerConsents()`.
 
+## Retention and erasure
+
+```
+sake dev/tasks/consent-retention older-than-days=730       # one-off
+sake dev/tasks/consent-retention consent-id=jo@example.com # erasure request
+sake dev/tasks/consent-retention                           # uses retention_days below
+```
+
+Records are kept until you say otherwise. To delete them automatically, set a period and start the job:
+
+```yml
+Mouseketeers\ConsentRecords\ConsentRetention:
+  retention_days: 730      # 0 (default) = never delete
+  job_interval_days: 7     # how often the job runs
+```
+
+```
+sake dev/tasks/consent-retention schedule=1
+```
+
+The job needs [symbiote/silverstripe-queuedjobs](https://github.com/symbiote/silverstripe-queuedjobs) and its
+cron/worker. It deletes records older than `retention_days`, then queues its own next run, so `schedule=1` is
+only needed once. With `retention_days: 0` it does nothing and stops repeating.
+
+`ConsentRetention` calls an `onBeforePurge(array $records)` extension hook with each batch (500 records, see
+`batch_size`) just before it is deleted. consent-userforms uses it to delete the linked UserForms submissions.
+
 ## Module compatibility
 
 | consent-records | consent-forms | consent-userforms | cookie-consent | SilverStripe |
@@ -110,8 +137,7 @@ writes are only possible server-side through `ConsentRecord::registerConsents()`
 | 2.2+            | 3.x           | 2.x               | 2.x, 3.x       | 4            |
 
 `cookie-consent` needs consent-records 2.2 or later (the `_consent/register` route). Earlier versions expose
-`/consent/register`. The retention/erasure task is only available on the SilverStripe 6 line (5.x).
-
+`/consent/register`. 
 ## Database Fields
 
 - `ConsentID`: Unique identifier for the consent
