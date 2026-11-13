@@ -21,7 +21,7 @@ class ConsentRetentionTask extends BuildTask
 
     protected static string $description = 'Deletes consent records older than --older-than-days, or all records for --consent-id.';
 
-    private static string $commandName = 'consent-retention';
+    protected static string $commandName = 'consent-retention';
 
     public function getOptions(): array
     {
