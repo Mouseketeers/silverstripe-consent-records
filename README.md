@@ -106,9 +106,30 @@ writes are only possible server-side through `ConsentRecord::registerConsents()`
 ## Retention and erasure
 
 ```
-sake tasks:consent-retention --older-than-days=1095
-sake tasks:consent-retention --consent-id=jo@example.com
+sake tasks:consent-retention --older-than-days=730       # one-off
+sake tasks:consent-retention --consent-id=jo@example.com # erasure request
+sake tasks:consent-retention                             # uses retention_days below
 ```
+
+Records are kept until you say otherwise. To delete them automatically, set a period and start the job:
+
+```yml
+Mouseketeers\ConsentRecords\ConsentRetention:
+  retention_days: 730      # 0 (default) = never delete
+  job_interval_days: 7     # how often the job runs
+```
+
+```
+sake tasks:consent-retention --schedule
+```
+
+The job needs [symbiote/silverstripe-queuedjobs](https://github.com/symbiote/silverstripe-queuedjobs) and its
+cron/worker. It deletes records older than `retention_days`, then queues its own next run, so `--schedule` is
+only needed once (running it again is harmless). With `retention_days: 0` it does nothing and stops repeating.
+
+Only the consent records are deleted. Other personal data, such as UserForms submissions (see `SubmissionID`),
+is not touched; delete those from your own project, e.g. by calling
+`ConsentRetention::purge($days)` from your own job.
 
 ## Module compatibility
 

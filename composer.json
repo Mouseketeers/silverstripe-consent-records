@@ -32,11 +32,15 @@
         }
     },
     "require-dev": {
-        "phpunit/phpunit": "^11.3"
+        "phpunit/phpunit": "^11.3",
+        "symbiote/silverstripe-queuedjobs": "^6"
     },
     "autoload-dev": {
         "psr-4": {
             "Mouseketeers\\ConsentRecords\\Tests\\": "tests/"
         }
+    },
+    "suggest": {
+        "symbiote/silverstripe-queuedjobs": "Runs the consent retention job on a schedule"
     }
 }
