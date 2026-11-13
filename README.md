@@ -127,9 +127,11 @@ The job needs [symbiote/silverstripe-queuedjobs](https://github.com/symbiote/sil
 cron/worker. It deletes records older than `retention_days`, then queues its own next run, so `--schedule` is
 only needed once (running it again is harmless). With `retention_days: 0` it does nothing and stops repeating.
 
-Only the consent records are deleted. Other personal data, such as UserForms submissions (see `SubmissionID`),
-is not touched; delete those from your own project, e.g. by calling
-`ConsentRetention::purge($days)` from your own job.
+Only the consent records are deleted by this module. Other modules can delete the data that belongs to them:
+`ConsentRetention` calls an `onBeforePurge(array $records)` extension hook with each batch (500 records, see
+`batch_size`) just before it is deleted. consent-userforms uses it to delete the linked UserForms submissions.
+Personal data outside that, such as submissions of forms with no consent field, is not touched; delete it from
+your own project, e.g. by calling `ConsentRetention::purge($days)` from your own job.
 
 ## Module compatibility
 

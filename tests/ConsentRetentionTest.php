@@ -8,6 +8,7 @@ use Mouseketeers\ConsentRecords\ConsentRetention;
 use Mouseketeers\ConsentRecords\ConsentRetentionJob;
 use Mouseketeers\ConsentRecords\ConsentRetentionTask;
 use SilverStripe\Core\Config\Config;
+use SilverStripe\Core\Extension;
 use SilverStripe\Dev\SapphireTest;
 use SilverStripe\ORM\DB;
 use SilverStripe\PolyExecution\PolyOutput;
@@ -16,14 +17,30 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputDefinition;
 
+/** Records what the onBeforePurge hook is called with. */
+class RecordingPurgeExtension extends Extension
+{
+    public static array $batches = [];
+
+    public function onBeforePurge(array $records): void
+    {
+        self::$batches[] = array_map(fn ($record) => $record->ConsentID, $records);
+    }
+}
+
 class ConsentRetentionTest extends SapphireTest
 {
     protected $usesDatabase = true;
+
+    protected static $required_extensions = [
+        ConsentRetention::class => [RecordingPurgeExtension::class],
+    ];
 
     /** Three records: 400, 100 and 0 days old. */
     protected function setUp(): void
     {
         parent::setUp();
+        RecordingPurgeExtension::$batches = [];
 
         foreach ([['old@example.com', '-400 days'], ['mid@example.com', '-100 days'], ['new@example.com', 'now']] as [$id, $when]) {
             $record = ConsentRecord::create(['ConsentID' => $id, 'ConsentType' => 'X', 'URL' => 'https://example.com/']);
@@ -53,6 +70,19 @@ class ConsentRetentionTest extends SapphireTest
     {
         $this->assertSame(0, ConsentRetention::purge(30, 'new@example.com'));
         $this->assertCount(3, $this->remaining());
+    }
+
+    public function testHookSeesEachBatchAndEveryRecordIsDeleted()
+    {
+        Config::modify()->set(ConsentRetention::class, 'batch_size', 2);
+        for ($i = 0; $i < 5; $i++) {
+            ConsentRecord::create(['ConsentID' => 'bulk@example.com', 'ConsentType' => 'X', 'URL' => 'https://example.com/'])->write();
+        }
+
+        $this->assertSame(5, ConsentRetention::purge(0, 'bulk@example.com'));
+
+        $this->assertSame([2, 2, 1], array_map('count', RecordingPurgeExtension::$batches));
+        $this->assertCount(3, $this->remaining(), 'other records are untouched');
     }
 
     public function testPurgeWithoutCriteriaIsRefused()
