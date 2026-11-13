@@ -8,6 +8,13 @@ use SilverStripe\Control\HTTPResponse;
 
 class CookieConsentConfigurationController extends Controller
 {
+    /**
+     * The most consents one request may contain.
+     *
+     * @config
+     */
+    private static $max_consents = 20;
+
     private static $allowed_actions = [
         'register',
         'configuration'
@@ -35,6 +42,13 @@ class CookieConsentConfigurationController extends Controller
         $consents = isset($payload['Consents']) && is_array($payload['Consents'])
             ? $payload['Consents']
             : [$payload['consent'] ?? $payload];
+
+        if (!$consents || count($consents) > $this->config()->get('max_consents')) {
+            return $this->jsonResponse([
+                'status' => 'error',
+                'message' => 'Expected between 1 and ' . $this->config()->get('max_consents') . ' consents.'
+            ], 400);
+        }
 
         if (!ConsentRecord::registerConsents(['FormData' => $formData, 'Consents' => $consents])) {
             return $this->jsonResponse([
