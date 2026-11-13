@@ -56,11 +56,26 @@ class ConsentRecord extends DataObject {
 		return $fields;
 	}
 	
-	public static function registerConsents($data) 
+	/**
+	 * Saves every consent in $data['Consents'], using $data['FormData'] as the form data.
+	 *
+	 * @return bool False when there is nothing to save or a save fails
+	 */
+	public static function registerConsents($data)
 	{
-		foreach ($data['Consents'] as $consent) {
-			self::registerConsent($data['FormData'] ?? [], $consent);
+		$consents = $data['Consents'] ?? [];
+
+		if (!is_array($consents) || !$consents) {
+			return false;
 		}
+
+		foreach ($consents as $consent) {
+			if (!self::registerConsent($data['FormData'] ?? [], $consent)) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	public static function registerConsent($data, $consent = null)
