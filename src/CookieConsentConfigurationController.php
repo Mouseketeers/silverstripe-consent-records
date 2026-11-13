@@ -16,8 +16,7 @@ class CookieConsentConfigurationController extends Controller
     private static $max_consents = 20;
 
     private static $allowed_actions = [
-        'register',
-        'configuration'
+        'register'
     ];
 
     public function register(HTTPRequest $request)
@@ -57,13 +56,6 @@ class CookieConsentConfigurationController extends Controller
             ], 500);
         }
 
-        return $this->jsonResponse([
-            'status' => 'ok'
-        ]);
-    }
-
-    public function configuration(HTTPRequest $request)
-    {
         return $this->jsonResponse([
             'status' => 'ok'
         ]);
