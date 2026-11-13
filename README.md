@@ -103,20 +103,14 @@ $privacyLink = $siteConfig->getPrivacyPageLink('Privacy Policy');
 browser requests are rejected, and the body is capped at `max_body_bytes`. Form data and multi-consent
 writes are only possible server-side through `ConsentRecord::registerConsents()`.
 
-## Retention and erasure
-
-```
-sake tasks:consent-retention --older-than-days=1095
-sake tasks:consent-retention --consent-id=jo@example.com
-```
-
 ## Module compatibility
 
 | consent-records | consent-forms | consent-userforms | cookie-consent | SilverStripe |
 |-----------------|---------------|-------------------|----------------|--------------|
-| 5.x             | 4.x (SS5), 5.x (SS6) | 3.x (SS5.4/6), 4.x (SS6) | 3.x (SS5), 4.x (SS6) | 5.4 / 6      |
+| 2.2+            | 3.x           | 2.x               | 2.x, 3.x       | 4            |
 
-`cookie-consent` needs consent-records 5.x (the `_consent/register` route). Versions before 5.0 expose `/consent/register`.
+`cookie-consent` needs consent-records 2.2 or later (the `_consent/register` route). Earlier versions expose
+`/consent/register`. The retention/erasure task is only available on the SilverStripe 6 line (5.x).
 
 ## Database Fields
 
