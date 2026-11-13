@@ -23,7 +23,11 @@ class ConsentRecord extends DataObject {
 		'ConsentStatement' => 'Text',
 		'ConsentData' => 'Text',
 		'ConsentType' => 'Varchar(255)',
-		'URL' => 'Varchar(255)',
+		// Which mechanism wrote the record (e.g. cookie-banner, userform); set by the server, never the visitor.
+		'Source' => 'Varchar(50)',
+		// ID of the originating submission (e.g. a userforms SubmittedForm), 0 when there is none.
+		'SubmissionID' => 'Int',
+		'URL' => 'Varchar(2048)',
 		'TermsPageID' => 'Int',
 		'TermsPageVersion' => 'Int',
 		'PrivacyPageID' => 'Int',
@@ -35,12 +39,14 @@ class ConsentRecord extends DataObject {
 		'ConsentID',
 		'ConsentStatement',
 		'ConsentType',
+		'Source',
 		'URL'
 	];
 	private static $searchable_fields = [
 		'ConsentID',
 		'ConsentStatement',
 		'ConsentType',
+		'Source',
 		'URL'
 	];
 	private static $indexes = [
@@ -101,6 +107,8 @@ class ConsentRecord extends DataObject {
 			'ConsentID' => 			$consent['ConsentID'] ?? $data['Email'] ?? 'N/A',
 			'ConsentStatement' => 	$consent['ConsentStatement'] ?? $data['TermsAndPrivacyConsent'] ?? 'N/A',
 			'ConsentData' => 		$consent['ConsentData'] ?? ($data ?: 'N/A'),
+			'Source' => 			$consent['Source'] ?? null,
+			'SubmissionID' => 		(int) ($consent['SubmissionID'] ?? 0),
 			'URL' => 				$consent['URL'] ?? Director::absoluteURL(Controller::curr()->getRequest()->getURL())
 		];
 

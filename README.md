@@ -13,7 +13,7 @@ A SilverStripe module for managing user consent records to help with GDPR compli
 ## Installation
 
 ```bash
-composer require mouseketeers/consent-records
+composer require mouseketeers/silverstripe-consent-records
 ```
 
 ## Usage
@@ -94,12 +94,37 @@ $termsLink = $siteConfig->getTermsPageLink('Terms of Use');
 $privacyLink = $siteConfig->getPrivacyPageLink('Privacy Policy');
 ```
 
+## Cookie banner endpoint
+
+`POST /_consent/register` (used by mouseketeers/silverstripe-cookie-consent) accepts **one** consent as JSON
+(`ConsentType`, `ConsentID`, `ConsentStatement`, `ConsentData`, `URL`). Only types in
+`CookieConsentConfigurationController.allowed_types` (default `CookieConsent`) are accepted, cross-site
+browser requests are rejected, and the body is capped at `max_body_bytes`. Form data and multi-consent
+writes are only possible server-side through `ConsentRecord::registerConsents()`.
+
+## Retention and erasure
+
+```
+sake tasks:consent-retention --older-than-days=1095
+sake tasks:consent-retention --consent-id=jo@example.com
+```
+
+## Module compatibility
+
+| consent-records | consent-forms | consent-userforms | cookie-consent | SilverStripe |
+|-----------------|---------------|-------------------|----------------|--------------|
+| 4.x             | 4.x, 5.x      | 3.x               | 3.x (SS5), 4.x (SS6), once updated | 5.4 / 6      |
+
+`cookie-consent` needs consent-records 4.x (the `_consent/register` route).
+
 ## Database Fields
 
 - `ConsentID`: Unique identifier for the consent
 - `ConsentStatement`: The actual consent text (HTML stripped)
 - `ConsentData`: Additional data stored as JSON
 - `ConsentType`: Type of consent (e.g., 'TermsAndPrivacyConsent', 'Newsletter')
+- `Source`: What wrote the record (`cookie-banner`, `userform`, …), set by the server
+- `SubmissionID`: ID of the originating submission, e.g. a UserForms `SubmittedForm` (0 if none)
 - `URL`: The URL where consent was given
 - `TermsPageID/Version`: Link to Terms page at time of consent
 - `PrivacyPageID/Version`: Link to Privacy page at time of consent
