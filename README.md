@@ -114,7 +114,8 @@ sake tasks:consent-retention --consent-id=jo@example.com
 
 | consent-records | consent-forms | consent-userforms | cookie-consent | SilverStripe |
 |-----------------|---------------|-------------------|----------------|--------------|
-| 5.x             | 4.x (SS5), 5.x (SS6) | 3.x (SS5.4/6), 4.x (SS6) | 3.x (SS5), 4.x (SS6) | 5.4 / 6      |
+| 5.x             | 5.x           | 4.x               | 4.x            | 6            |
+| 4.x (support)   | 4.x           | 3.x               | 3.x            | 5.4          |
 
 `cookie-consent` needs consent-records 5.x (the `_consent/register` route). Versions before 5.0 expose `/consent/register`.
 
@@ -132,10 +133,10 @@ sake tasks:consent-retention --consent-id=jo@example.com
 
 ## Requirements
 
-- SilverStripe Framework ^5.4 or ^6
-- SilverStripe CMS ^5 or ^6
-- SilverStripe Admin ^2 or ^3
-- PHP ^8.1
+- SilverStripe Framework ^6, CMS ^6, Admin ^3
+- PHP ^8.3
+
+SilverStripe 5.4 users stay on the 4.x line (`support/4.x`).
 
 ## License
 
