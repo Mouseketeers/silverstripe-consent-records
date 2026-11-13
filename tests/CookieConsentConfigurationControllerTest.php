@@ -47,6 +47,16 @@ class CookieConsentConfigurationControllerTest extends SapphireTest
         $this->assertSame(0, (int) $record->SubmissionID);
     }
 
+    public function testStatementAndJsonDataAreStored()
+    {
+        $data = json_encode(['accepted' => ['functional'], 'rejected' => ['marketing']]);
+        $this->post($this->cookieConsent(['ConsentStatement' => '<p>We use cookies</p>', 'ConsentData' => $data]));
+
+        $record = ConsentRecord::get()->first();
+        $this->assertSame('We use cookies', $record->ConsentStatement);
+        $this->assertSame(['functional'], json_decode($record->ConsentData, true)['accepted']);
+    }
+
     public function testOtherConsentTypesAreRejected()
     {
         [$status] = $this->post($this->cookieConsent(['ConsentType' => 'TermsAndPrivacyConsent']));

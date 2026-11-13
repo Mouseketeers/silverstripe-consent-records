@@ -105,7 +105,7 @@ class ConsentRecord extends DataObject {
 		$assignments = [
 			'ConsentType' => 		$consent['ConsentType'] ?? 'N/A',
 			'ConsentID' => 			$consent['ConsentID'] ?? $data['Email'] ?? 'N/A',
-			'ConsentStatement' => 	$consent['ConsentStatement'] ?? $data['TermsAndPrivacyConsent'] ?? 'N/A',
+			'ConsentStatement' => 	$consent['ConsentStatement'] ?? 'N/A',
 			'ConsentData' => 		$consent['ConsentData'] ?? ($data ?: 'N/A'),
 			'Source' => 			$consent['Source'] ?? null,
 			'SubmissionID' => 		(int) ($consent['SubmissionID'] ?? 0),

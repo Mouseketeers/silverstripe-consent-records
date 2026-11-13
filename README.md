@@ -23,13 +23,14 @@ composer require mouseketeers/silverstripe-consent-records
 ```php
 use Mouseketeers\ConsentRecords\ConsentRecord;
 
-// Simple consent recording
+// Simple consent recording (the statement is 'N/A' unless you pass one)
 $data = [
     'Email' => 'user@example.com',
-    'TermsAndPrivacyConsent' => 'I agree to the terms and privacy policy'
 ];
 
-ConsentRecord::registerConsent($data);
+ConsentRecord::registerConsent($data, [
+    'ConsentStatement' => 'I agree to the terms and privacy policy',
+]);
 
 // Advanced consent recording with custom consent data
 $consent = [
