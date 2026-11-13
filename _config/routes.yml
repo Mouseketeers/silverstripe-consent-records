@@ -4,5 +4,6 @@ After: framework/routes#coreroutes
 ---
 Director:
   rules:
-    'consent//$Action': 'Mouseketeers\\ConsentRecords\\CookieConsentConfigurationController'
-    'cookie-consent//$Action': 'Mouseketeers\\ConsentRecords\\CookieConsentConfigurationController'
+    # Underscore prefix so the route cannot shadow a CMS page URL segment.
+    # Keep in step with CookieConsentConfigurationController.url_segment.
+    '_consent//$Action': 'Mouseketeers\\ConsentRecords\\CookieConsentConfigurationController'
