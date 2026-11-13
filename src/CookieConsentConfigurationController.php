@@ -36,13 +36,11 @@ class CookieConsentConfigurationController extends Controller
             ? $payload['Consents']
             : [$payload['consent'] ?? $payload];
 
-        foreach ($consents as $consent) {
-            if (!ConsentRecord::registerConsent($formData, $consent)) {
-                return $this->jsonResponse([
-                    'status' => 'error',
-                    'message' => 'Consent could not be saved.'
-                ], 500);
-            }
+        if (!ConsentRecord::registerConsents(['FormData' => $formData, 'Consents' => $consents])) {
+            return $this->jsonResponse([
+                'status' => 'error',
+                'message' => 'Consent could not be saved.'
+            ], 500);
         }
 
         return $this->jsonResponse([
