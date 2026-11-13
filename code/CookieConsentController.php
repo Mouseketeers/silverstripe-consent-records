@@ -48,14 +48,6 @@ class CookieConsentController extends Controller
             }
         }
 
-        if (isset($_POST['payloadData'])) {
-            $payload = json_decode($_POST['payloadData'], true);
-
-            if (json_last_error() === JSON_ERROR_NONE && is_array($payload)) {
-                return $payload;
-            }
-        }
-
         return [];
     }
 
