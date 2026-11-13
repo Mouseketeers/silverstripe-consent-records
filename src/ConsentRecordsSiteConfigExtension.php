@@ -4,6 +4,7 @@ namespace Mouseketeers\ConsentRecords;
 
 use SilverStripe\Core\Config\Config;
 use SilverStripe\ORM\DataExtension;
+use SilverStripe\Core\Convert;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\TreeDropdownField;
 use SilverStripe\CMS\Model\SiteTree;
@@ -77,16 +78,16 @@ class ConsentRecordsSiteConfigExtension extends DataExtension
         if ($page && $page->exists()) {
             return sprintf(
                 '<a href="%s" target="_blank" class="legal-page-link">%s</a>',
-                $page->Link(),
-                $page->MenuTitle
+                Convert::raw2att($page->Link()),
+                Convert::raw2xml($page->MenuTitle)
             );
         }
 
         if ($url) {
             return sprintf(
                 '<a href="%s" target="_blank" class="legal-page-link">%s</a>',
-                $url,
-                $label
+                Convert::raw2att($url),
+                Convert::raw2xml((string) $label)
             );
         }
 
