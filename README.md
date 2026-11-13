@@ -106,9 +106,10 @@ $privacyLink = $siteConfig->getPrivacyPageLink('Privacy Policy');
 
 ## Requirements
 
-- SilverStripe Framework ^4.0
-- SilverStripe CMS ^4.0
-- SilverStripe Admin ^1.0
+- SilverStripe Framework ^5.4 or ^6
+- SilverStripe CMS ^5 or ^6
+- SilverStripe Admin ^2 or ^3
+- PHP ^8.1
 
 ## License
 
