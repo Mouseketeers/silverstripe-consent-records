@@ -44,7 +44,8 @@ class ConsentRecord extends DataObject {
 		'URL'
 	];
 	private static $indexes = [
-		'ConsentID' => true
+		'ConsentID' => true,
+		'Created' => true
 	];
 
 	public function getCMSFields()
