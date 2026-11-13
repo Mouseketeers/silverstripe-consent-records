@@ -7,7 +7,7 @@ class ConsentRecord extends DataObject
 
 	private static $db = [
 		'ConsentID' => 'Varchar(255)',
-		'ConsentStatement' => 'Varchar(255)',
+		'ConsentStatement' => 'Text',
 		'ConsentData' => 'Text',
 		'ConsentType' => 'Varchar(255)',
 		'URL' => 'Varchar(255)',
