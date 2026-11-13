@@ -2,8 +2,8 @@
 Name: consent-records-routes
 After: framework/routes#coreroutes
 ---
-Director:
+SilverStripe\Control\Director:
   rules:
     # Underscore prefix so the route cannot shadow a CMS page URL segment.
     # Keep in step with CookieConsentConfigurationController.url_segment.
-    '_consent//$Action': 'Mouseketeers\\ConsentRecords\\CookieConsentConfigurationController'
+    '_consent//$Action': Mouseketeers\ConsentRecords\CookieConsentConfigurationController
