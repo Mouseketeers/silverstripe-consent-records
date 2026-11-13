@@ -140,7 +140,7 @@ your own project, e.g. by calling `ConsentRetention::purge($days)` from your own
 | 5.x             | 5.x           | 4.x               | 4.x            | 6            |
 | 4.x (support)   | 4.x           | 3.x               | 3.x            | 5.4          |
 
-`cookie-consent` needs consent-records 5.x (the `_consent/register` route). Versions before 5.0 expose `/consent/register`.
+`cookie-consent` needs the `_consent/register` route, which exists from consent-records 5.0 (SilverStripe 6), 4.1 (SilverStripe 5.4) and 2.2 (SilverStripe 4). Earlier releases expose `/consent/register`.
 
 ## Database Fields
 
