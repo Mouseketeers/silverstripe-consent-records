@@ -77,9 +77,6 @@ class ConsentRecord extends DataObject
 		if ($this->ConsentStatement) {
 			$this->ConsentStatement = strip_tags($this->ConsentStatement);
 		}
-		if ($this->ConsentData) {
-			$this->ConsentData = strip_tags($this->ConsentData);
-		}
 
 		$siteConfig = SiteConfig::current_site_config();		
 		
