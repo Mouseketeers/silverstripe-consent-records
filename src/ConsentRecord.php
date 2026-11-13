@@ -6,6 +6,10 @@ use SilverStripe\ORM\DataObject;
 use SilverStripe\Control\Controller;
 use SilverStripe\Control\Director;
 use SilverStripe\SiteConfig\SiteConfig;
+use SilverStripe\ORM\DB;
+use SilverStripe\Core\Injector\Injector;
+use Psr\Log\LoggerInterface;
+use Exception;
 
 
 class ConsentRecord extends DataObject {
@@ -59,7 +63,7 @@ class ConsentRecord extends DataObject {
 	/**
 	 * Saves every consent in $data['Consents'], using $data['FormData'] as the form data.
 	 *
-	 * @return bool False when there is nothing to save or a save fails
+	 * @return bool False when there is nothing to save or a save fails. Then nothing is saved.
 	 */
 	public static function registerConsents($data)
 	{
@@ -69,10 +73,18 @@ class ConsentRecord extends DataObject {
 			return false;
 		}
 
-		foreach ($consents as $consent) {
-			if (!self::registerConsent($data['FormData'] ?? [], $consent)) {
-				return false;
-			}
+		// All or nothing: if one save fails, none are kept, so a retry cannot create duplicates.
+		try {
+			DB::get_conn()->withTransaction(function () use ($consents, $data) {
+				foreach ($consents as $consent) {
+					if (!self::registerConsent($data['FormData'] ?? [], $consent)) {
+						throw new Exception('Consent could not be saved.');
+					}
+				}
+			});
+		} catch (Exception $e) {
+			Injector::inst()->get(LoggerInterface::class)->error($e->getMessage());
+			return false;
 		}
 
 		return true;
